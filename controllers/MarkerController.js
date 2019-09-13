@@ -38,6 +38,7 @@ exports.addLatLongs=(req,res,next)=>{
         // for(let ele of latLongSent){
         //     latLongs.push(ele);
         // }
+        console.log("inside else:"+JSON.stringify(latLongSent));
         latLongs.push(latLongSent);
     }
     

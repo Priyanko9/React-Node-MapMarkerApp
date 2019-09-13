@@ -1,24 +1,26 @@
 import React,{Component} from 'react';
-import {getLatLong,createMarker,readMarkers,saveMarkers,getAllMarkers} from '../actions/markerActions';
+import { connect } from 'react-redux';
+import {getLatLong,createMarker,readMarkers,addStatus,saveMarkers,getAllMarkers} from '../actions/markerActions';
 
 class AddMarker extends Component{
 
     constructor(props){
+        super(props);
         this.state={
-            location:"",
+            location:props.elementToEdit||"",
             searchResults:[]
         }
     }
-    createMarkers(event,selectedlatlongs){
+    createMarkers(selectedlatlongs){
         //create Markers
         this.props.dispatch(saveMarkers([]));
-        this.props.clearAllMarkers();
+        this.clearAllMarkers();
             this.props.dispatch(createMarker(selectedlatlongs)).then((res)=>{
-                this.props.dispatch(readMarkers()).then((res)=>{
-                    this.props.dispatch(getAllMarkers(res.data))
-                    this.props.addMarker(this.props.map,this.props.latLongsArray);
+                this.props.dispatch(readMarkers()).then((latLongResponse)=>{
+                    this.props.dispatch(getAllMarkers(latLongResponse.data))
+                    this.props.addMarkerProp(this.props.map,this.props.latLongsArray);
                     this.props.dispatch({type:"Notification",message:"marker created successfully"});
-                    if(this.props.add){
+                    if(this.props.status==="add"){
                         this.props.dispatch(addStatus("display"));
                     }
                 });
@@ -42,7 +44,7 @@ class AddMarker extends Component{
                         edit:false
                     }
                 })
-                this.setState({searchResults});
+                this.setState({searchResults:latlongs});
             })
     }
     setlocation(event){

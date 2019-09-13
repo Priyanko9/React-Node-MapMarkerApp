@@ -3,7 +3,7 @@ import '../App.css';
 import Map from '../util/map';
 import { connect } from 'react-redux';
 import {MAP_OPTIONS} from '../util/constant';
-import {readMarkers,saveMarkers,getAllMarkers} from '../actions/markerActions';
+import {readMarkers,saveMarkers,saveMap,addStatus,getAllMarkers} from '../actions/markerActions';
 import AddMarker from './AddMarkers';
 import EditDelete from './EditDelete';
 class Marker extends Component{
@@ -12,11 +12,12 @@ class Marker extends Component{
         super(props)
         this.props.dispatch(readMarkers()).then((res)=>{
             this.props.dispatch(getAllMarkers(res.data));
-            this.addMarker();
+            this.props.dispatch(addStatus("display"));
+            this.addMarker(this.props.map);
         });
     }
     
-    markers(map,lat,lng){
+    newMarker(map,lat,lng){
         if(window.google){
             return new window.google.maps.Marker({
                     position: { lat,lng },
@@ -25,12 +26,12 @@ class Marker extends Component{
         }
     }
     
-    addMarker(map,latlongsArray){
-        let latLongs=latlongsArray||this.props.latlongsArray;
+    addMarker=(map,latlongsArray)=>{
+        let latLongs=latlongsArray||this.props.latLongsArray;
         let markers=[];
         if(latLongs){
             for(let ele of latLongs){
-                const markerEle= this.markers(map,Number(ele.lat),Number(ele.long));
+                const markerEle= this.newMarker(map,Number(ele.lat),Number(ele.long));
                 markers.push(markerEle);
             }
         }
@@ -49,16 +50,16 @@ class Marker extends Component{
                     onMapLoad={(map)=>this.addMarker(map)}
                 />
                 <div className="markerPane">
-                    {this.props.status==="add" && <AddMarker addMarker={this.addMarker}/>}
+                    {this.props.status==="add" && <AddMarker addMarkerProp={this.addMarker} elementToEdit={this.props.elementToEdit}/>}
                     {this.props.status==="display" && 
                     <div className="displayList">
                         <div>
                             <button className="addMarker" onClick={(e)=>this.props.dispatch(addStatus("add"))}>Add Marker</button>
                         </div>
                         <div className="markersList">
-                            {this.props.latLongsArray && this.props.latLongsArray.map((ele)=>{
+                            {this.props.latLongsArray && this.props.latLongsArray.map((ele,index)=>{
                                 return(
-                                    <div key={ele.location}>
+                                    <div key={index}>
                                         <EditDelete placeObject={ele}/>
                                     </div>
                                 );

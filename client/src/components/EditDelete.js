@@ -1,9 +1,10 @@
 import React,{Component} from 'react';
-import {deleteMarker,readMarkers,getAllMarkers,editMarker} from '../actions/markerActions';
+import { connect } from 'react-redux';
+import {deleteMarker,readMarkers,getAllMarkers,addStatus,editMarker} from '../actions/markerActions';
 
 class AddMarker extends Component{
 
-    deleteMarker(e,ele){
+    deleteMarker(ele){
         this.props.dispatch(deleteMarker(ele));
         this.clearMarkers(ele);
         this.props.dispatch(readMarkers()).then((res)=>{
@@ -18,19 +19,19 @@ class AddMarker extends Component{
             } 
        })
     }
-    editMarker(e,latLongElement){
+    editMarker(latLongElement){
         latLongElement.edit=true;
-        let {latLongsArray}=this.props;
-        latLongsArray=latLongsArray.map((ele,index)=>{
-            if(ele.location===latLongElement.location){
-                ele.edit=true;
-            } else{
-                ele.edit=false;
-            }
-            return ele
-       })
+    //     let {latLongsArray}=this.props;
+    //     latLongsArray=latLongsArray.map((ele,index)=>{
+    //         if(ele.location===latLongElement.location){
+    //             ele.edit=true;
+    //         } else{
+    //             ele.edit=false;
+    //         }
+    //         return ele
+    //    })
        this.props.dispatch(editMarker(latLongElement));
-       this.props.dispatch(addStatus("add"));
+       this.props.dispatch(addStatus("add",latLongElement.location));
     }
     render(){
         let {placeObject}=this.props;
@@ -38,8 +39,8 @@ class AddMarker extends Component{
             <div className="addMarker">
                 <div className="place">{placeObject.location}</div>
                 <div>
-                    <span><button className="editMarker" onClick={(e)=>this.editMarker(e,placeObject)}>Edit</button></span>
-                    <span><button className="deleteMarker" onClick={(e)=>this.deleteMarker(e,placeObject)}>Delete</button></span>
+                    <span><button className="editMarker" onClick={(e)=>this.editMarker(placeObject)}>Edit</button></span>
+                    <span><button className="deleteMarker" onClick={(e)=>this.deleteMarker(placeObject)}>Delete</button></span>
                 </div>
             </div>
         )

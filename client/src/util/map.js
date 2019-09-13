@@ -1,11 +1,7 @@
 import React,{Component} from 'react';
-import {render} from 'react-dom';
 
 export default class Map extends Component{
-    constructor(props){
-        super(props);
-        
-    }
+    
     onScriptLoad(){
         //create map
         let googleMap=new window.google.maps.Map(document.getElementById(this.props.id),this.props.options);

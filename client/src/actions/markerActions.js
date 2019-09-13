@@ -39,14 +39,14 @@ export function deleteMarker(latlongs){
 export function getLatLong(place){
     let url=GEO_CODE_URL+'?key='+ACCESS_TOKEN+'&q='+place+'&format=json'
     return(dispatch)=>{
-        let latlong=[]
         return axios.get(url);
     }
 }
 
-export function addStatus(status){
+export function addStatus(status,elementToEdit){
     return {
         status,
+        elementToEdit,
         type:"saveStatus"
     }
 }

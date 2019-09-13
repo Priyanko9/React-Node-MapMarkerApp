@@ -25,7 +25,8 @@ export default function markerReducer(state=initialState,action){
         case "saveStatus":
             return {
                 ...state,
-                status:action.status
+                status:action.status,
+                elementToEdit:action.elementToEdit
             }; 
         case "saveMap":
             return {
