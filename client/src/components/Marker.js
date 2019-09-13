@@ -57,16 +57,12 @@ class Marker extends Component{
                             <button className="addMarker" onClick={(e)=>this.props.dispatch(addStatus("add"))}>Add Marker</button>
                         </div>
                         <div className="markersList">
-                            {this.props.latLongsArray && this.props.latLongsArray.map((ele,index)=>{
-                                return(
-                                    <div key={index}>
-                                        <EditDelete placeObject={ele}/>
-                                    </div>
-                                );
-                            })}
+                            {this.props.latLongsArray && this.props.latLongsArray.map((ele,index)=><EditDelete placeObject={ele} key={index}/>)}
+                            {(!this.props.latLongsArray||this.props.latLongsArray.length===0)  && <div>No Marked Places</div>}
                         </div>
                     </div>
                     }
+                    
                 </div>
             </div>
         )

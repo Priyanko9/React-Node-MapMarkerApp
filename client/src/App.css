@@ -1,7 +1,9 @@
+html,body{
+  overflow:hidden;
+}
 .App {
   text-align: center;
 }
-
 .map{
   height:500px;
   width:900px;
@@ -9,4 +11,60 @@
 .marker{
   display:flex;
   flex-direction: row;
+
+}
+button{
+  background: royalblue;
+  border-style: none;
+  padding: 5px;
+  color: white;
+  margin:5px;
+}
+button:hover{
+  cursor:pointer;
+}
+.displayList{
+  margin-top:10px;
+}
+.locationInput{
+  height: 20px;
+}
+
+.markerPane{
+  margin-left: 10px;
+  width: 30%;
+}
+.addMarkerSection{
+  margin-top:10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.searchBox{
+  margin-right: 5px;
+}
+.saveMarker{
+  margin-top:10px;
+  margin-bottom:10px;
+}
+.blockLevelCard{
+  padding: 10px;
+  margin: 10px;
+  background: antiquewhite;
+}
+
+.searchedLocations{
+  font-family: sans-serif;
+}
+.searchResults{
+  overflow: auto;
+  height: 500px;
+}
+.markersList{
+  overflow: auto;
+  height: 500px;
+}
+.showMarkedPlaces{
+  margin-top:10px;
+  margin-bottom:10px;
 }

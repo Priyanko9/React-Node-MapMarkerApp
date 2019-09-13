@@ -36,7 +36,7 @@ class AddMarker extends Component{
     render(){
         let {placeObject}=this.props;
         return(
-            <div className="addMarker">
+            <div className="blockLevelCard">
                 <div className="place">{placeObject.location}</div>
                 <div>
                     <span><button className="editMarker" onClick={(e)=>this.editMarker(placeObject)}>Edit</button></span>

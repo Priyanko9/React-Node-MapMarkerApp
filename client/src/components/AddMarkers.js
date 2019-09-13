@@ -44,7 +44,7 @@ class AddMarker extends Component{
                         edit:false
                     }
                 })
-                this.setState({searchResults:latlongs});
+                this.setState({searchResults:latlongs,location:""});
             })
     }
     setlocation(event){
@@ -53,18 +53,21 @@ class AddMarker extends Component{
     }
     render(){
         return(
-            <div className="addMarker">
-                 <div><input type="text" className="location"  value={this.state.location} onChange={(e)=>this.setlocation(e)}/></div>
-                 <span><button className="saveMarker" onClick={(e)=>this.searchResults(e)}>Search</button></span>
+            <div className="addMarkerSection">
+                 <div className="searchBox"><input type="text" className="locationInput"  value={this.state.location} onChange={(e)=>this.setlocation(e)}/></div>
+                 <div className="saveMarker"><button  onClick={(e)=>this.searchResults(e)}>Search</button></div>
+                 <div className="showMarkedPlaces"><button  onClick={(e)=>this.props.dispatch(addStatus("display"))}>Show Marked Places</button></div>
+                 <div className="searchResults">
                     {this.state.searchResults && this.state.searchResults.map((ele)=>{
                         return (
                             <div key={ele.location} className="blockLevelCard">
+                                <div className="searchedLocations">{ele.location}</div>
                                 <div><button onClick={(e)=>this.createMarkers(ele)}>Add To Map</button></div>
-                                <div>{ele.location}</div>
                             </div>
                             )
                         })
                     }
+                </div>    
             </div>
         )
     }
