@@ -73,3 +73,10 @@ button:hover{
   margin: 10px;
   background: antiquewhite;
 }
+.location{
+  width: fit-content;
+  margin: 0 auto;
+}
+.editDeleteCard:hover{
+  cursor:pointer;
+}

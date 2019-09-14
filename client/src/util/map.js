@@ -12,7 +12,7 @@ export default class Map extends Component{
         if(!window.google){
             let mapScript=document.createElement("script");
             mapScript.type="text/javascript"
-            mapScript.src="https://maps.google.com/maps/api/js?key=AIzaSyDD48XLaImS9m7ssNrOF0-Yt6ZR0aZCPec"
+            mapScript.src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDD48XLaImS9m7ssNrOF0-Yt6ZR0aZCPec"
             let firstScriptElement=document.getElementsByTagName("script")[0];
             firstScriptElement.parentNode.insertBefore(mapScript,firstScriptElement);
 

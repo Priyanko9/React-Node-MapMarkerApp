@@ -4,19 +4,21 @@ import {deleteMarker,readMarkers,getAllMarkers,addStatus,editMarker} from '../ac
 
 class AddMarker extends Component{
 
-    componentDidMount(){
-        let markersList=document.getElementsByClassName("markersList")[0];
+    
+    addInfoWindow(event){
+        event.preventDefault();
+        if(this.infowindow){
+            this.infowindow.close();
+        }
         let {map,placeObject,newMarker}=this.props;
-        markersList.addEventListener("click",(event)=>{
-            event.preventDefault();
-            let location=event.target.textContent;
-            this.clearMarker({location});
-            let marker=newMarker(map,Number(placeObject.lat),Number(placeObject.long));
-            let infowindow = new window.google.maps.InfoWindow({
-                content:placeObject.location
-              });
-              infowindow.open(map,marker);  
-        });
+        let location=event.target.textContent;
+        this.clearMarker({location});
+        let marker=newMarker(map,Number(placeObject.lat),Number(placeObject.long));
+        this.infowindow = new window.google.maps.InfoWindow({
+            content:placeObject.location
+          });
+        this.infowindow.open(map,marker);  
+        map.setCenter({lat: Number(placeObject.lat), lng: Number(placeObject.long)})
     }
     clearMarker(selectedElement){
         let {latLongsArray,markers}=this.props;
@@ -34,24 +36,15 @@ class AddMarker extends Component{
         });
     }
     editMarker(latLongElement){
-        latLongElement.edit=true;
-    //     let {latLongsArray}=this.props;
-    //     latLongsArray=latLongsArray.map((ele,index)=>{
-    //         if(ele.location===latLongElement.location){
-    //             ele.edit=true;
-    //         } else{
-    //             ele.edit=false;
-    //         }
-    //         return ele
-    //    })
+       latLongElement.edit=true;
        this.props.dispatch(editMarker(latLongElement));
        this.props.dispatch(addStatus("add",latLongElement.location));
     }
     render(){
         let {placeObject}=this.props;
         return(
-            <div className="editDeleteCard">
-                {placeObject.location}
+            <div className="editDeleteCard" onClick={(e)=>this.addInfoWindow(e)}>
+                <div className="location">{placeObject.location}</div>
                 <div>
                     <span><button className="editMarker" onClick={(e)=>this.editMarker(placeObject)}>Edit</button></span>
                     <span><button className="deleteMarker" onClick={(e)=>this.deleteMarker(placeObject)}>Delete</button></span>
