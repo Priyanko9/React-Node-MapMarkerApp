@@ -1,41 +1,58 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
-import {deleteMarker,readMarkers,getAllMarkers,addStatus,editMarker} from '../actions/markerActions';
+import {deleteMarker,readMarkers,getAllMarkers,addStatus,editMarker,saveMarkers} from '../actions/markerActions';
 
 class AddMarker extends Component{
 
     
     addInfoWindow(event){
         event.preventDefault();
-        if(this.infowindow){
-            this.infowindow.close();
+        if(window.infowindow){
+            window.infowindow.close();
         }
-        let {map,placeObject,newMarker}=this.props;
+        let {map,placeObject,latLongsArray,markers}=this.props;
         let location=event.target.textContent;
-        this.clearMarker({location});
-        let marker=newMarker(map,Number(placeObject.lat),Number(placeObject.long));
-        this.infowindow = new window.google.maps.InfoWindow({
+        // this.clearMarker({location});
+        // let marker=newMarker(map,Number(placeObject.lat),Number(placeObject.long));
+        window.infowindow = new window.google.maps.InfoWindow({
             content:placeObject.location
-          });
-        this.infowindow.open(map,marker);  
+        });
+
+        latLongsArray.forEach((ele,index)=>{
+            if(ele.location===placeObject.location){
+                window.infowindow.open(map,markers[index]);
+                //dispatch(saveMarkers(markers));
+            } 
+        })
+          
         map.setCenter({lat: Number(placeObject.lat), lng: Number(placeObject.long)})
     }
     clearMarker(selectedElement){
-        let {latLongsArray,markers}=this.props;
+        let {latLongsArray,markers,dispatch}=this.props;
         latLongsArray.forEach((ele,index)=>{
             if(ele.location===selectedElement.location){
                 markers[index].setMap(null);
+                //markers.splice(index,1);
+                dispatch(saveMarkers(markers));
             } 
        })
     }
-    deleteMarker(ele){
+    deleteMarker(event,ele){
+        event.stopPropagation();
+        if(window.infowindow){
+            window.infowindow.close();
+        }
         this.props.dispatch(deleteMarker(ele));
-        this.props.clearMarker(ele);
+        this.clearMarker(ele);
         this.props.dispatch(readMarkers()).then((res)=>{
             this.props.dispatch(getAllMarkers(res.data));
         });
     }
-    editMarker(latLongElement){
+    editMarker(event,latLongElement){
+        event.stopPropagation();
+        if(window.infowindow){
+            window.infowindow.close();
+        }
        latLongElement.edit=true;
        this.props.dispatch(editMarker(latLongElement));
        this.props.dispatch(addStatus("add",latLongElement.location));
@@ -46,8 +63,8 @@ class AddMarker extends Component{
             <div className="editDeleteCard" onClick={(e)=>this.addInfoWindow(e)}>
                 <div className="location">{placeObject.location}</div>
                 <div>
-                    <span><button className="editMarker" onClick={(e)=>this.editMarker(placeObject)}>Edit</button></span>
-                    <span><button className="deleteMarker" onClick={(e)=>this.deleteMarker(placeObject)}>Delete</button></span>
+                    <span><button className="editMarker" onClick={(e)=>this.editMarker(e,placeObject)}>Edit</button></span>
+                    <span><button className="deleteMarker" onClick={(e)=>this.deleteMarker(e,placeObject)}>Delete</button></span>
                 </div>
             </div>
         )
