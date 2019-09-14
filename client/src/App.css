@@ -68,3 +68,8 @@ button:hover{
   margin-top:10px;
   margin-bottom:10px;
 }
+.editDeleteCard{
+  padding: 10px;
+  margin: 10px;
+  background: antiquewhite;
+}

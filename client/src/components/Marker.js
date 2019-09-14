@@ -16,7 +16,19 @@ class Marker extends Component{
             this.addMarker(this.props.map);
         });
     }
-    
+    componentDidMount(){
+        let markersList=document.getElementsByClassName("markersList")[0];
+        let {map,placeObject}=this.props;
+        markersList.addEventListener("click",(event)=>{
+            
+            this.clearMarker(placeObject);
+            let marker=this.newMarker(map,Number(placeObject.lat),Number(placeObject.long));
+            let infowindow = new window.google.maps.InfoWindow({
+                content:placeObject.location
+              });
+              infowindow.open(map,marker);  
+        });
+    }
     newMarker(map,lat,lng){
         if(window.google){
             return new window.google.maps.Marker({
@@ -50,7 +62,7 @@ class Marker extends Component{
                     onMapLoad={(map)=>this.addMarker(map)}
                 />
                 <div className="markerPane">
-                    {this.props.status==="add" && <AddMarker addMarkerProp={this.addMarker} elementToEdit={this.props.elementToEdit}/>}
+                    {this.props.status==="add" && <AddMarker addMarkerProp={this.addMarker} elementToEdit={this.props.elementToEdit} />}
                     {this.props.status==="display" && 
                     <div className="displayList">
                         <div>

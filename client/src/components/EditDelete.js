@@ -4,14 +4,15 @@ import {deleteMarker,readMarkers,getAllMarkers,addStatus,editMarker} from '../ac
 
 class AddMarker extends Component{
 
+    
     deleteMarker(ele){
         this.props.dispatch(deleteMarker(ele));
-        this.clearMarkers(ele);
+        this.clearMarker(ele);
         this.props.dispatch(readMarkers()).then((res)=>{
             this.props.dispatch(getAllMarkers(res.data));
         });
     }
-    clearMarkers(selectedElement){
+    clearMarker(selectedElement){
         let {latLongsArray,markers}=this.props;
         latLongsArray.forEach((ele,index)=>{
             if(ele.location===selectedElement.location){
@@ -36,7 +37,7 @@ class AddMarker extends Component{
     render(){
         let {placeObject}=this.props;
         return(
-            <div className="blockLevelCard">
+            <div className="editDeleteCard">
                 <div className="place">{placeObject.location}</div>
                 <div>
                     <span><button className="editMarker" onClick={(e)=>this.editMarker(placeObject)}>Edit</button></span>

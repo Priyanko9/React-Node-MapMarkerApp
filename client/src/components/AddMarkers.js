@@ -13,8 +13,10 @@ class AddMarker extends Component{
     }
     createMarkers(selectedlatlongs){
         //create Markers
+
         this.props.dispatch(saveMarkers([]));
         this.clearAllMarkers();
+        this.props.map.setCenter({lat: Number(selectedlatlongs.lat), lng: Number(selectedlatlongs.long)})
             this.props.dispatch(createMarker(selectedlatlongs)).then((res)=>{
                 this.props.dispatch(readMarkers()).then((latLongResponse)=>{
                     this.props.dispatch(getAllMarkers(latLongResponse.data))
