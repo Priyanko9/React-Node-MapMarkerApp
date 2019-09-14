@@ -3,7 +3,7 @@ import '../App.css';
 import Map from '../util/map';
 import { connect } from 'react-redux';
 import {MAP_OPTIONS} from '../util/constant';
-import {readMarkers,saveMarkers,saveMap,addStatus,getAllMarkers} from '../actions/markerActions';
+import {readMarkers,saveMarkers,saveMap,addStatus,getAllLatLongs} from '../actions/markerActions';
 import AddMarker from './AddMarkers';
 import EditDelete from './EditDelete';
 class Marker extends Component{
@@ -11,7 +11,7 @@ class Marker extends Component{
     constructor(props){
         super(props)
         this.props.dispatch(readMarkers()).then((res)=>{
-            this.props.dispatch(getAllMarkers(res.data));
+            this.props.dispatch(getAllLatLongs(res.data));
             this.props.dispatch(addStatus("display"));
             this.addMarker(this.props.map);
         });

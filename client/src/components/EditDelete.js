@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
-import {deleteMarker,readMarkers,getAllMarkers,addStatus,editMarker,saveMarkers} from '../actions/markerActions';
+import {deleteMarker,readMarkers,getAllLatLongs,addStatus,editMarker,saveMarkers} from '../actions/markerActions';
 
 class AddMarker extends Component{
 
@@ -11,17 +11,13 @@ class AddMarker extends Component{
             window.infowindow.close();
         }
         let {map,placeObject,latLongsArray,markers}=this.props;
-        let location=event.target.textContent;
-        // this.clearMarker({location});
-        // let marker=newMarker(map,Number(placeObject.lat),Number(placeObject.long));
         window.infowindow = new window.google.maps.InfoWindow({
             content:placeObject.location
         });
-
         latLongsArray.forEach((ele,index)=>{
             if(ele.location===placeObject.location){
                 window.infowindow.open(map,markers[index]);
-                //dispatch(saveMarkers(markers));
+                
             } 
         })
           
@@ -32,10 +28,10 @@ class AddMarker extends Component{
         latLongsArray.forEach((ele,index)=>{
             if(ele.location===selectedElement.location){
                 markers[index].setMap(null);
-                //markers.splice(index,1);
-                dispatch(saveMarkers(markers));
+                markers.splice(index,1);
             } 
        })
+       dispatch(saveMarkers(markers));
     }
     deleteMarker(event,ele){
         event.stopPropagation();
@@ -45,7 +41,7 @@ class AddMarker extends Component{
         this.props.dispatch(deleteMarker(ele));
         this.clearMarker(ele);
         this.props.dispatch(readMarkers()).then((res)=>{
-            this.props.dispatch(getAllMarkers(res.data));
+            this.props.dispatch(getAllLatLongs(res.data));
         });
     }
     editMarker(event,latLongElement){

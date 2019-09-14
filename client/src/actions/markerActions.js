@@ -17,8 +17,8 @@ export function saveMarkers(markers){
         markers,type:"saveMarkers"
     }
 }
-export function getAllMarkers(latLongs){
-    return {type:"getAllMarkers",latLongs}
+export function getAllLatLongs(latLongs){
+    return {type:"getAllLatLongs",latLongs}
 }
 export function editMarker(latlongs){
     return(dispatch)=>{

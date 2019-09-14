@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
-import {getLatLong,createMarker,readMarkers,addStatus,saveMarkers,getAllMarkers} from '../actions/markerActions';
+import {getLatLong,createMarker,readMarkers,addStatus,saveMarkers,getAllLatLongs} from '../actions/markerActions';
 
 class AddMarker extends Component{
 
@@ -19,7 +19,7 @@ class AddMarker extends Component{
         this.props.map.setCenter({lat: Number(selectedlatlongs.lat), lng: Number(selectedlatlongs.long)})
             this.props.dispatch(createMarker(selectedlatlongs)).then((res)=>{
                 this.props.dispatch(readMarkers()).then((latLongResponse)=>{
-                    this.props.dispatch(getAllMarkers(latLongResponse.data))
+                    this.props.dispatch(getAllLatLongs(latLongResponse.data))
                     this.props.addMarkerProp(this.props.map,this.props.latLongsArray);
                     this.props.dispatch({type:"Notification",message:"marker created successfully"});
                     if(this.props.status==="add"){

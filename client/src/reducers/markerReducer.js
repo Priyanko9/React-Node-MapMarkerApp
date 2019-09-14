@@ -2,7 +2,7 @@ let initialState={};
 
 export default function markerReducer(state=initialState,action){
     switch(action.type){
-        case "getAllMarkers":
+        case "getAllLatLongs":
             return {
                 ...state,
                 latLongsArray:action.latLongs

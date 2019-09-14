@@ -12,19 +12,6 @@ exports.addLatLongs=(req,res,next)=>{
     let length=latLongs.length;
     let present=false;
     if(length>0){
-        // for(let ele1 of latLongSent){
-        //     let present=false;
-        //     for(let ele2 of latLongs){
-        //         if(ele1.lat===ele2.lat && ele1.long===ele2.long){
-        //             present=true;
-        //             break;
-        //         }
-        //     }
-        //     if(!present){
-        //         storedLatLong.push(ele1);
-        //     }
-        // }
-        // latLongs=latLongs.concat(storedLatLong);
         for(let ele of latLongs){
             if(latLongSent.lat===ele.lat && latLongSent.long===ele.long){
                 present=true;
@@ -35,10 +22,6 @@ exports.addLatLongs=(req,res,next)=>{
             latLongs.push(latLongSent);
         }
     } else {
-        // for(let ele of latLongSent){
-        //     latLongs.push(ele);
-        // }
-        console.log("inside else:"+JSON.stringify(latLongSent));
         latLongs.push(latLongSent);
     }
     
@@ -62,16 +45,13 @@ exports.editLatLongs=(req,res,next)=>{
 }
 exports.deleteLatLongs=(req,res,next)=>{
     let deletedLatLong=req.body;
-    console.log("deletedLatLong:"+deletedLatLong.lat,+deletedLatLong.long);
     latLongs=latLongs.filter((ele)=>{
         if(deletedLatLong.lat===ele.lat && deletedLatLong.long===ele.long){
-            console.log("deleted");
             return false;
         }
         return true;
     })
     localStorage.setItem("latLongsList",latLongs)
     res.status(200).send();
-    //res.json(latLongs);
 }
 
