@@ -4,12 +4,18 @@ import {deleteMarker,readMarkers,getAllMarkers,addStatus,editMarker} from '../ac
 
 class AddMarker extends Component{
 
-    
-    deleteMarker(ele){
-        this.props.dispatch(deleteMarker(ele));
-        this.clearMarker(ele);
-        this.props.dispatch(readMarkers()).then((res)=>{
-            this.props.dispatch(getAllMarkers(res.data));
+    componentDidMount(){
+        let markersList=document.getElementsByClassName("markersList")[0];
+        let {map,placeObject,newMarker}=this.props;
+        markersList.addEventListener("click",(event)=>{
+            event.preventDefault();
+            let location=event.target.textContent;
+            this.clearMarker({location});
+            let marker=newMarker(map,Number(placeObject.lat),Number(placeObject.long));
+            let infowindow = new window.google.maps.InfoWindow({
+                content:placeObject.location
+              });
+              infowindow.open(map,marker);  
         });
     }
     clearMarker(selectedElement){
@@ -19,6 +25,13 @@ class AddMarker extends Component{
                 markers[index].setMap(null);
             } 
        })
+    }
+    deleteMarker(ele){
+        this.props.dispatch(deleteMarker(ele));
+        this.props.clearMarker(ele);
+        this.props.dispatch(readMarkers()).then((res)=>{
+            this.props.dispatch(getAllMarkers(res.data));
+        });
     }
     editMarker(latLongElement){
         latLongElement.edit=true;
@@ -38,7 +51,7 @@ class AddMarker extends Component{
         let {placeObject}=this.props;
         return(
             <div className="editDeleteCard">
-                <div className="place">{placeObject.location}</div>
+                {placeObject.location}
                 <div>
                     <span><button className="editMarker" onClick={(e)=>this.editMarker(placeObject)}>Edit</button></span>
                     <span><button className="deleteMarker" onClick={(e)=>this.deleteMarker(placeObject)}>Delete</button></span>
