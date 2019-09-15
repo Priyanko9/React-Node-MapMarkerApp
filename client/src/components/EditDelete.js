@@ -24,24 +24,24 @@ class AddMarker extends Component{
         map.setCenter({lat: Number(placeObject.lat), lng: Number(placeObject.long)})
     }
     clearMarker(selectedElement){
-        let {latLongsArray,markers,dispatch}=this.props;
+        let {latLongsArray,markers,saveMarkers}=this.props;
         latLongsArray.forEach((ele,index)=>{
             if(ele.location===selectedElement.location){
                 markers[index].setMap(null);
                 markers.splice(index,1);
             } 
        })
-       dispatch(saveMarkers(markers));
+       saveMarkers(markers);
     }
     deleteMarker(event,ele){
         event.stopPropagation();
         if(window.infowindow){
             window.infowindow.close();
         }
-        this.props.dispatch(deleteMarker(ele));
+        this.props.deleteMarker(ele);
         this.clearMarker(ele);
-        this.props.dispatch(readMarkers()).then((res)=>{
-            this.props.dispatch(getAllLatLongs(res.data));
+        this.props.readMarkers().then((res)=>{
+            this.props.getAllLatLongs(res.data);
         });
     }
     editMarker(event,latLongElement){
@@ -50,8 +50,8 @@ class AddMarker extends Component{
             window.infowindow.close();
         }
        latLongElement.edit=true;
-       this.props.dispatch(editMarker(latLongElement));
-       this.props.dispatch(addStatus("add",latLongElement.location));
+       this.props.editMarker(latLongElement);
+       this.props.addStatus("add",latLongElement.location);
     }
     render(){
         let {placeObject}=this.props;
@@ -71,4 +71,11 @@ const mapStateToProps=(state)=>{
     return {...state}
 }
 
-export default connect(mapStateToProps)(AddMarker);
+export default connect(mapStateToProps,{
+    deleteMarker,
+    readMarkers,
+    getAllLatLongs,
+    addStatus,
+    editMarker,
+    saveMarkers
+})(AddMarker);

@@ -7,11 +7,6 @@ export default function markerReducer(state=initialState,action){
                 ...state,
                 latLongsArray:action.latLongs
             };
-        case "setLatLong":
-            return {
-                ...state,
-                latlong:action.latlong
-            }; 
         case "saveMarkers":
             return {
                 ...state,

@@ -10,9 +10,9 @@ class Marker extends Component{
 
     constructor(props){
         super(props)
-        this.props.dispatch(readMarkers()).then((res)=>{
-            this.props.dispatch(getAllLatLongs(res.data));
-            this.props.dispatch(addStatus("display"));
+        this.props.readMarkers().then((res)=>{
+            this.props.getAllLatLongs(res.data);
+            this.props.addStatus("display");
             this.addMarker(this.props.map);
         });
     }
@@ -37,9 +37,9 @@ class Marker extends Component{
             }
         }
         if(!this.props.map){
-            this.props.dispatch(saveMap(map));
+            this.props.saveMap(map);
         }
-        this.props.dispatch(saveMarkers(markers));
+        this.props.saveMarkers(markers);
     }
     
     render(){
@@ -55,7 +55,7 @@ class Marker extends Component{
                     {this.props.status==="display" && 
                     <div className="displayList">
                         <div>
-                            <button className="addMarker" onClick={(e)=>this.props.dispatch(addStatus("add"))}>Add Marker</button>
+                            <button className="addMarker" onClick={(e)=>this.props.addStatus("add")}>Add Marker</button>
                         </div>
                         <div className="markersList">
                             {this.props.latLongsArray && this.props.latLongsArray.map((ele,index)=><EditDelete newMarker={this.newMarker} placeObject={ele} key={index}/>)}
@@ -74,4 +74,10 @@ const mapStateToProps=(state)=>{
     return {...state}
 }
 
-export default connect(mapStateToProps)(Marker);
+export default connect(mapStateToProps,{
+    readMarkers,
+    saveMarkers,
+    saveMap,
+    addStatus,
+    getAllLatLongs
+})(Marker);

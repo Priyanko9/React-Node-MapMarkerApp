@@ -23,7 +23,7 @@ export function getAllLatLongs(latLongs){
 export function editMarker(latlongs){
     return(dispatch)=>{
         axios.put('/marker/editMarker',latlongs).then((res)=>{
-            dispatch({type:"Notification",message:"marker edited successfully"});
+            dispatch(notification("marker edited successfully"));
         })
     }      
 }
@@ -31,7 +31,7 @@ export function editMarker(latlongs){
 export function deleteMarker(latlongs){
     return(dispatch)=>{
         axios.delete('/marker/deleteMarker',{data:latlongs}).then((res)=>{
-            dispatch({type:"Notification",message:"marker deleted successfully"});
+            dispatch(notification("marker deleted successfully"));
         })
     }      
 }
@@ -58,4 +58,10 @@ export function saveMap(map){
     }
 }
 
+export function notification(message){
+    return {
+        type:"Notification",
+        message
+    }
+}
 
