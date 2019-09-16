@@ -1,25 +1,54 @@
 import axios from "axios";
-import {GEO_CODE_URL,ACCESS_TOKEN} from '../util/constant';
+import {GEO_CODE_URL,GEOCODE_ACCESS_TOKEN} from '../util/constant';
+import {SAVE_MARKERS,GET_LATLONGS,ERROR,CLEAR_ERROR,SAVE_STATUS,SAVE_MAP,NOTIFY} from './actionTypes';
 
-export function readMarkers(){
-    return(dispatch)=>{
-        return axios.get('/marker/getMarkers')
-    }
-}
-
-export function createMarker(latlongs){
-    return(dispatch)=>{
-        return axios.post('/marker/addMarker',latlongs)
-    }       
-}
+//save the markers array to the store
 export function saveMarkers(markers){
     return {
-        markers,type:"saveMarkers"
+        markers,type:SAVE_MARKERS
     }
 }
+//get all the latlongs series and save it to the store
 export function getAllLatLongs(latLongs){
-    return {type:"getAllLatLongs",latLongs}
+    return {type:GET_LATLONGS,latLongs}
 }
+
+export function notifyError(error){
+    return {
+        type:ERROR,
+        error
+    }
+}
+
+export function clearError(){
+    return {
+        type:CLEAR_ERROR,
+    }
+}
+
+export function addStatus(status,elementToEdit){
+    return {
+        status,
+        elementToEdit,
+        type:SAVE_STATUS
+    }
+}
+
+export function saveMap(map){
+    return {
+        map,
+        type:SAVE_MAP
+    }
+}
+
+export function notification(message){
+    return {
+        type:NOTIFY,
+        message
+    }
+}
+
+// Async Actions
 export function editMarker(latlongs){
     return(dispatch)=>{
         axios.put('/marker/editMarker',latlongs).then((res)=>{
@@ -35,33 +64,24 @@ export function deleteMarker(latlongs){
         })
     }      
 }
-
+//read all the places from the search string
 export function getLatLong(place){
-    let url=GEO_CODE_URL+'?key='+ACCESS_TOKEN+'&q='+place+'&format=json'
+    let url=GEO_CODE_URL+'?key='+GEOCODE_ACCESS_TOKEN+'&q='+place+'&format=json'
     return(dispatch)=>{
         return axios.get(url);
     }
 }
-
-export function addStatus(status,elementToEdit){
-    return {
-        status,
-        elementToEdit,
-        type:"saveStatus"
+//read all the available latlongs
+export function readMarkers(){
+    return(dispatch)=>{
+        return axios.get('/marker/getMarkers')
     }
 }
-
-export function saveMap(map){
-    return {
-        map,
-        type:"saveMap"
-    }
+//Add a new latlong object to the existing set
+export function createMarker(latlongs){
+    return(dispatch)=>{
+        return axios.post('/marker/addMarker',latlongs)
+    }       
 }
 
-export function notification(message){
-    return {
-        type:"Notification",
-        message
-    }
-}
 
