@@ -6,6 +6,8 @@ for a particular location.The user also can edit and delete a marker.On clicking
 marker in the app along with a info window.
 In the backend the app uses a small CRUD functionality built using node and express.The app is using rest apis to handle the request.
 Unit Testing is done using jest and enzyme.For async api calls it uses moxios to test. 
+The project is live at https://mapmarkerappnode.onrender.com/
+
 
 # Installation
 npm install
